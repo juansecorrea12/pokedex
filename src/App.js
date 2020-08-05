@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import CardPokemon from "./components/card";
 import "./App.css";
-import { Container, Row, Form, FormControl, Button } from "react-bootstrap";
+import { Container, Row, Form, FormControl, Col } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import BulbasaurImg from "./images/Bulbasaur.png";
@@ -437,52 +437,76 @@ export default function App() {
       color: "rgb(192,138,70)",
     },
   ]);
+
+  const [typeSelect, setTypeSelect] = useState("Todos");
+  const handleType = (event) => {
+    setTypeSelect(event.target.value);
+  };
+
+  const [nameSelect, setNameSelect] = useState("");
+  const handleNameSelect = (event) => {
+    setNameSelect(event.target.value);
+  };
+
   return (
     <Container fluid>
-      <Row className="flex-column justify-content-center text-center my-5">
-        <div className="filters">
-          <select>
-            <option key={0} value="Todos">
-              Todos
-            </option>
-            {types.map((type, index) => {
-              return (
-                <option key={index + 1} value={type}>
-                  {type}
-                </option>
-              );
-            })}
-          </select>
+      <Row className="flex-column my-5">
+        <div className="filters d-flex justify-content-center">
+          <Col xs={4}>
+            <Form.Label>Selecciona una categoría</Form.Label>
+            <Form.Control as="select" custom onChange={handleType}>
+              <option key={0} value="Todos">
+                Todos
+              </option>
+              {types.map((type, index) => {
+                return (
+                  <option key={index + 1} value={type}>
+                    {type}
+                  </option>
+                );
+              })}
+            </Form.Control>
+          </Col>
         </div>
         <div className="filters d-flex justify-content-center">
-          {/* <form>
-            <input type="text" value="Charmander" />
-          </form> */}
           <Form inline>
             <FormControl
               type="text"
-              placeholder="Search Pokemon"
+              placeholder="Busca un pokemon"
               className="mr-sm-2"
+              value={nameSelect}
+              onChange={handleNameSelect}
             />
-            <Button variant="outline-success">Search</Button>
           </Form>
         </div>
       </Row>
       <Container fluid>
         <div className="cards">
-          {pokemons.map((pokemon) => {
-            return (
-              <CardPokemon
-                id={pokemon.id}
-                name={pokemon.name.english}
-                nameJapones={pokemon.name.japanese}
-                image={pokemon.sprite}
-                base={pokemon.base}
-                types={pokemon.type}
-                color={pokemon.color}
-              />
-            );
-          })}
+          {pokemons
+            .filter((pokemon) => {
+              return typeSelect === "Todos"
+                ? true
+                : pokemon.type.includes(typeSelect);
+            })
+            .filter((pokemon) => {
+              return pokemon.name.english === ""
+                ? true
+                : pokemon.name.english.includes(nameSelect);
+            })
+            .map((pokemon, index) => {
+              return (
+                <CardPokemon
+                  key={index}
+                  id={pokemon.id}
+                  name={pokemon.name.english}
+                  nameJapones={pokemon.name.japanese}
+                  image={pokemon.sprite}
+                  base={pokemon.base}
+                  types={pokemon.type}
+                  color={pokemon.color}
+                />
+              );
+            })}
         </div>
       </Container>
     </Container>

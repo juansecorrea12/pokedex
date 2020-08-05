@@ -5,15 +5,11 @@
   color: #fff;
   border-radius: 4px;
 }
-
-.filters {
-  margin-bottom: 1em;
-}
 .cards {
   width: 100%;
   height: auto;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-around;
 }

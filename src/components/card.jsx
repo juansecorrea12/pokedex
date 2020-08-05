@@ -6,7 +6,7 @@ export default function CardPokemon(props) {
     backgroundColor: props.color,
   };
   return (
-    <div className="cardpoke colpoke-4" style={styles}>
+    <div className="cardpoke col-md-3 col-xs-6" style={styles}>
       <div className="card-head">
         <div className="card-head-title">
           <span># {props.id}</span>
